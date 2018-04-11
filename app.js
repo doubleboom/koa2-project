@@ -1,7 +1,6 @@
 const logger = require('koa-logger');
 const serve = require('koa-static');
 const koaBody  = require('koa-body');
-// const bodyParser=require('koa-bodyparser');
 const views  = require('koa-views');
 const path = require('path');
 const passport = require('koa-passport');
