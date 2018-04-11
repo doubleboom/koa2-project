@@ -27,7 +27,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(views(viewsPath, { 
-    map: { html: 'handlebars' }
+    map: { html: 'ejs' },
+    extension:'html'
 }))
 
 
