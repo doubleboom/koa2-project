@@ -1,0 +1,331 @@
+</body>
+<% if(type!='auth'){ %>
+    <script>
+        // jQuery.fn.bootstrapTable.columnDefaults.formatter=function(value,row,index){
+        //             // return $("<div>").text(value).html();
+        //     }
+        function escapingHTML(value, row, index) {
+            return $("<div>").text(value).html();
+        }
+        var imageArray = {};
+        imageArray.categoryimage = "";
+        // imageArray.qualityimage = "";
+        imageArray.shopimage = "";
+        imageArray.goodimage = "";
+        imageArray.bannerimage = "";
+        imageArray.discountimage = "";
+        $(function () {
+            // $("#qualitytable").on("load-success.bs.table", function (params) {
+            //     $(this).bootstrapTable("getData");
+            // });
+            $('.container').show();
+            $("#export").click(function () {
+                location.href = '/download';
+            });
+            $("#exporttemplate").click(function () {
+                location.href = '/download?template';
+            });
+            function setSelect(tablename) {
+                $("#" + tablename + "table").on("load-success.bs.table", function (params) {
+                    var $select = $("#good" + tablename + "id");
+                    var htmlStr = "";
+                    var Datas = $(this).bootstrapTable("getData");
+                    Datas.forEach(function (item) {
+                        htmlStr += "<option value='" + item.id + "'>" + $("<div>").text(item[tablename + "name"]).html() + "</option>";
+                    });
+                    $("#good" + tablename + "id").html(htmlStr);
+                });
+            }
+            setSelect("category");
+            // setSelect("quality");
+            var operateFlag = 'add';
+            $("#navlink").on("click", "li", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                var $el = $("#" + this.id).get(0);
+                clearNavActive();
+                setNavActive($el);
+                setTableActive($el);
+                setPanelTitle($el);
+            });
+            function clearNavActive() {
+                $("#navlink li").each(function (index, el) {
+                    el.className = "";
+                })
+            }
+            function setNavActive($el) {
+                $el.className = "active";
+            }
+            function setTableActive($el) {
+                $(".bootstrap-table").hide();
+                $(".bootstrap-table").has($("#" + $el.id + "table")).show();
+                if ($el.id === "discount") $(".operatefile").show();
+                else $(".operatefile").hide();
+            }
+            function setPanelTitle($el) {
+                $(".panel-heading").get(0).innerText = $el.innerText;
+            }
+            $("#category").click();
+
+            function setInputsShow() {
+                var $table = $("#navlink li.active")[0].id;
+                var $inputs = $("#addModal input,select");
+                $inputs.each(function (index, $el) {
+                    if ($el.id.search($table) === 0) {
+                        $($el).parents('.form-group').show();
+                    }
+                    else {
+                        $($el).parents('.form-group').hide();
+                    }
+                });
+            }
+
+            function getShowInputs() {
+                var $table = $("#navlink li.active")[0].id;
+                var $inputs = $("#addModal input,select");
+                var showInputs = [];
+                $inputs.each(function (index, $el) {
+                    if ($el.id.search($table) === 0) {
+                        showInputs.push($el);
+                    }
+                });
+                return showInputs;
+            }
+
+            function checkDataIsEmpty(showInputs) {
+                var str = "";
+                showInputs.forEach(function (el) {
+                    if (el.id.search('image') === -1) {
+                        if ($(el).val().trim() == "") {
+                            str += $(el).siblings("label").text() + " ";
+                        }
+                    }
+                    else {
+                        if (imageArray[el.id].length === 0) {
+                            str = "图片不能为空";
+                        }
+                    }
+                });
+                return str;
+            }
+
+            $("#add").click(function (e) {
+                var $table = $("#navlink li.active")[0].id;
+                operateFlag = 'add';
+                setInputsShow();
+                initFileUpload($table + "image", [], []);
+                $('#addModal').modal('show');
+            })
+
+            $("#delete").click(function (e) {
+                var $table = $("#navlink li.active")[0].id;
+                var selections = $("#" + $table + "table").bootstrapTable('getSelections');
+                if (selections.length === 1) {
+                    $("#deletemodal").modal("show");
+                    $("#confirmdelete").click(function () {
+                        $.ajax({
+                            url: "/api/delete/" + $table + "/" + selections[0].id + "?_csrf=" + $("#csrf").val(),
+                            method: "delete",
+                            success: function (data) {
+                                if (data != "fail") {
+                                    $("#" + $table + "table").bootstrapTable('refresh');
+                                    $("#deletemodal").modal("hide");
+                                }
+                            }
+                        });
+                    })
+                }
+                else {
+                    alert("请选择一条数据进行删除，请勿多选");
+                }
+            })
+
+            $("#edit").click(function (e) {
+                var $table = $("#navlink li.active")[0].id;
+                var selections = $("#" + $table + "table").bootstrapTable('getSelections');
+                if (selections.length === 1) {
+                    $.get('/api/getEdit/' + $table + '/' + selections[0].id, function (data) {
+                        if (data != "fail") {
+                            data = data[0];
+                            setInputsShow();
+                            var showInputs = getShowInputs();
+                            showInputs.forEach(function ($el) {
+                                if ($el.id.search('image') === -1) {
+                                    $("#" + $el.id).val(data[$el.id]);
+                                }
+                                else {
+                                    imageArray[$el.id] = data[$el.id]
+                                }
+                            })
+                            var initImage = imageArray[$table + "image"].split(',');
+                            // imageArray[$table + "image"]="";
+                            var initialPreview = [];
+                            var initialPreviewConfig = [];
+                            if (initImage === 1)
+                                initialPreview.push("<img src='" + initImage[0] + "' class='file-preview-image kv-preview-data'>");
+                            else {
+                                initImage.forEach(function (item) {
+                                    initialPreviewConfig.push({ key: item });
+                                    initialPreview.push("<img src='" + item + "' class='file-preview-image kv-preview-data'>");
+                                })
+                            }
+                            initFileUpload($table + "image", initialPreview, initialPreviewConfig);
+                            modal = $('#addModal');
+                            modal.find('.modal-title').text('编辑');
+                            modal.modal('show');
+                            operateFlag = 'edit';
+                        }
+                    });
+                }
+                else {
+                    alert('请选择一条需要编辑的数据');
+                }
+            });
+
+            $("#submit").click(function (e) {
+                var obj = {};
+                var url = "";
+                var method = "";
+                var dataFlag = true;
+                var table = $("#navlink li.active")[0].id;
+                obj._csrf = $("#csrf").val();
+                var showInputs = getShowInputs();
+                var emptyStr = checkDataIsEmpty(showInputs);
+                if (emptyStr != "") {
+                    alert(emptyStr + "不能为空");
+                    return;
+                }
+                showInputs.forEach(function (el) {
+                    if (el.id.search('image') === -1)
+                        obj[el.id] = $(el).val().trim();
+                    else
+                        obj[el.id] = imageArray[el.id];
+                });
+                obj.table = table;
+                if (operateFlag === 'edit') {
+                    url = '/api/edit';
+                    method = "put";
+                    obj.id = $("#" + table + "table").bootstrapTable('getSelections')[0].id
+                }
+                else {
+                    url = '/api/add';
+                    method = "post";
+                    delete obj.id
+                }
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data: obj,
+                    success: function (data) {
+                        if (data != "fail") {
+                            $('#addModal').modal('hide');
+                            $("#" + table + "table").bootstrapTable('refresh');
+                        }
+                    }
+                });
+            });
+
+            $('#addModal').on('hidden.bs.modal', function (e) {
+                var table = $("#navlink li.active")[0].id;
+                $("#addModal input").val("");
+                imageArray[table + "image"] = "";
+                $("#" + table + "image").fileinput('destroy');
+            })
+
+            $('#uploadpage').on('hidden.bs.modal', function (e) {
+                $("#discounttable").bootstrapTable('refresh');
+            })
+
+            function changeiFrameStyle() {
+                var x = document.getElementById("rfFrame");
+                var y = (x.contentWindow || x.contentDocument);
+                if (y.document) y = y.document;
+                y.body.style.overflow = "hidden";
+            }
+
+            //初始化fileinput控件（第一次初始化）
+            function initFileUpload(ctrlName, previewArray, previewConfig) {
+                var control = $('#' + ctrlName);
+                var maxCount = ctrlName === 'goodimage' || ctrlName === 'shopimage' ? 5 : 1;
+
+                //初始化上传控件的样式
+                control.fileinput({
+                    language: 'zh', //设置语言
+                    uploadUrl: '/uploadimage', //上传的地址
+                    allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                    showUpload: true, //是否显示上传按钮
+                    deleteUrl: '/api/deleteimage?_csrf=' + $("#csrf").val(),
+                    showCaption: false,//是否显示标题
+                    browseClass: "btn btn-primary", //按钮样式     
+                    showRemove: false,
+                    showUpload: false,
+                    //dropZoneEnabled: false,//是否显示拖拽区域
+                    //minImageWidth: 50, //图片的最小宽度
+                    //minImageHeight: 50,//图片的最小高度
+                    //maxImageWidth: 1000,//图片的最大宽度
+                    //maxImageHeight: 1000,//图片的最大高度
+                    //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+                    // minFileCount: 1,
+                    maxFileCount: maxCount, //表示允许同时上传的最大文件个数
+                    enctype: 'multipart/form-data',
+                    validateInitialCount: true,
+                    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+                    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+                    uploadExtraData: { _csrf: $("#csrf").val() },
+                    initialPreview: previewArray,
+                    initialPreviewConfig: previewConfig
+                });
+                //导入文件上传完成之后的事件
+                control.off("fileuploaded");
+                control.on("fileuploaded", function (event, data, previewId, index) {
+                    if (imageArray[ctrlName] === "")
+                        imageArray[ctrlName] = data.response.url;
+                    else imageArray[ctrlName] = imageArray[ctrlName] + "," + data.response.url;
+                });
+                control.off("filecleared");
+                control.on("filecleared", function (event, data, msg) {
+                    imageArray[ctrlName] = "";
+                });
+                control.off("filesuccessremove");
+                control.on('filesuccessremove', function (event, id) {
+                    var index = $('.file-preview-thumbnails .file-preview-success').index($("#" + id));
+                    var urlArray = imageArray[ctrlName].split(',');
+                    var urlStr = "";
+                    if (urlArray.length === 1)
+                        imageArray[ctrlName] = "";
+                    else {
+                        urlArray.forEach(function (item, idx) {
+                            if (idx != index)
+                                urlStr = urlStr === "" ? item : urlStr + ',' + item;
+                        })
+                        imageArray[ctrlName] = urlStr;
+                    }
+                });
+                control.off("filebeforedelete");
+                control.on('filebeforedelete', function (event, key, data) {
+                    $('.file-preview-thumbnails').index();
+                });
+                control.off("filedeleted");
+                control.on('filedeleted', function (event, key, jqXHR, data) {
+                    var urlArray = imageArray[ctrlName].split(',');
+                    var urlStr = "";
+                    if (urlArray.length === 1)
+                        imageArray[ctrlName] = "";
+                    else {
+                        urlArray.forEach(function (item) {
+                            if (key != item)
+                                urlStr = urlStr === "" ? item : urlStr + ',' + item;
+                        })
+                        imageArray[ctrlName] = urlStr;
+                    }
+                });
+            }
+        });
+
+
+
+
+    </script>
+    <% } %>
+
+        </html>

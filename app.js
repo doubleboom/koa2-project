@@ -18,22 +18,27 @@ const app = new lkoa();
 app.use(logger());
 
 app.keys = [ 'mysession', 'mycsrf' ];
-app.use(koaBody({ multipart: true }));
+app.use(koaBody({ multipart: true,
+    formidable: {
+        maxFileSize: 20*1024*1024 // 设置上传文件大小最大限制，20M
+      }
+    }));
 app.use(lib.MountCsrfToContext);
 app.use(new CSRF());                   //需放在koaBody之後
 
 app.use(session(app));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(lib.MountAuthToContext);
 
 app.use(views(viewsPath, { 
-    map: { html: 'handlebars' }
+    map: { html: 'ejs' }
 }))
 
 
 app.use(serve(staticPath));  //静态服务器的路由需要放在错误路由前面，不然会导致无法获取静态资源
 
 app.setRouters();
-app.setErroRouters(app);
+// app.setErroRouters(app);
 
 app.listen(3000,'127.0.0.1',()=>console.log('服务器已经启动:http://localhost:3000'));

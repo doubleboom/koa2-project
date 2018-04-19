@@ -26,15 +26,15 @@ module.exports = {
         }
     },
     async postLogin(ctx, service, next) {
-        await service.authService.queryUser();
+        let user=ctx.request.body;
         try {
-            let user=ctx.request.body;
-                if (user.username!==""||user.password!=="") {
-                   await ctx.login(user);
-                    ctx.redirect('/');
+                let users=await service.authService.queryUser(user.acount,user.password);
+                if (users.length===1) {
+                   await ctx.login(users[0].id);
+                   ctx.body = "yes";
                 } else {
                     ctx.status = 400;
-                    ctx.body = { status: 'error' };
+                    ctx.body = "no";
                 }
         }
         catch (err) {
@@ -42,14 +42,14 @@ module.exports = {
         }
     },
     async postRegister(ctx, service, next) {
-        await service.authService.addUser();
+        let user=ctx.request.body;
         try {
-            let user=ctx.request.body;
-                if (user.username!==""||user.password!=="") {
-                    ctx.redirect('/login');
+                if (user.acount.trim()!==""||user.password.trim()!=="") {
+                    await service.authService.addUser(user.acount,user.password);
+                    ctx.body = "yes";
                 } else {
                     ctx.status = 400;
-                    ctx.body = { status: 'error' };
+                    ctx.body = "no";
                 }
         }
         catch (err) {
