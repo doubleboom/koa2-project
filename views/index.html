@@ -1,20 +1,257 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Index</title>
-  <style>
-    body {
-      padding: 50px;
-      font: 14px Helvetica, Arial;
-    }
-  </style>
-</head>
-<body>
-  <h1>File Upload</h1>
-  <p>Try uploading multiple files at a time.</p>
-  <form action="/" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" multiple>
-    <input type="submit" value="Upload">
-  </form>
-</body>
-</html>
+<%- include("./common/header",{type:'index',session:{},pagename:'管理界面'}) %>
+  <input hidden id="csrf" value="<%= csrf %>">
+  <div class="container" hidden>
+    <div class="modal fade" tabindex="-1" role="dialog" id="uploadpage" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+    <div class="container-flud">
+      <div class="panel panel-default">
+        <div id="toolbar">
+          <button type="button" class="btn btn-primary" id="add" data-toggle="modal">新增</button>
+          <button type="button" class="btn btn-primary" id="edit" data-toggle="modal">编辑</button>
+          <button type="button" class="btn btn-danger" id="delete">删除</button>
+          <a type="button" class="btn btn-primary" data-toggle="modal" href="/uploadxls" data-target="#uploadpage" id="import">导入</a>
+          <button type="button" class="btn btn-primary operatefile" id="export">导出</button>
+          <button type="button" class="btn btn-primary operatefile" id="exporttemplate">下载模板</button>
+        </div>
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="addModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="addModalLabel">New</h4>
+              </div>
+              <div class="modal-body">
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">轮播名称</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="bannername">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">轮播排序</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="bannerorder" min=0 type="number">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">轮播图片</label>
+                    <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="bannerimage"> -->
+                    <input type="file" name="files" id="bannerimage" class="file-loading" />
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品名称</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodname">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品排序</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodorder" min=0 type="number">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品介绍</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="gooddescription">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品优惠价</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodprice">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品原价</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodoriginalprice">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品库存</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodstock">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品分类</label>
+                    <select type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodcategoryid"></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品精选</label>
+                    <select type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodqualityid"></select>
+                  </div>
+                  <div class="form-group">
+                      <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品图片</label>
+                      <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodimage"> -->
+                      <input type="file" name="files" id="goodimage" multiple class="file-loading" />
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类名称</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="categoryname">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类排序</label>
+                    <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="categoryorder" min=0 type="number">
+                  </div>
+                  <div class="form-group"></div>
+                  <div class="form-group">
+                      <label for="recipient-name" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类图片</label>
+                    <!-- <input class="col-xs-9 col-sm-9 col-md-9 col-lg-9" id="categoryimage" type="file" class='file'> -->
+                    <!-- <input id="categoryimage"> -->
+                    <input type="file" name="files" id="categoryimage" class="file-loading" />
+                  </div>
+                  <!-- <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">精选名称</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="qualityname">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">精选顺序</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="qualityorder" min=0 type="number">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">精选图片</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="qualityimage">
+                    <input type="file" name="files" id="qualityimage" class="file-loading" />
+                  </div> -->
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">店家名称</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="shopname">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">店家介绍</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="shopdescription">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">店家电话</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="shopphonenumber">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">店家地址</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="shopposition">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">店家图片</label>
+                    <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="shopimage"> -->
+                    <input type="file" name="files" id="shopimage" multiple class="file-loading" />
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品名称</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="discountname">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">优惠价</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="discountprice" type="number" min="0">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">原价</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="discountoriginalprice" type="number" min="0">
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">截止日期</label>
+                    <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="discountexpirydate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="submit">确定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Default panel contents -->
+        <div class="panel-heading">分类管理
+          <span>13</span>
+        </div>
+        <table id="bannertable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/banner">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="bannername">轮播名称</th>
+              <th data-field="bannerimage">轮播图片</th>
+              <th data-field="bannerorder">轮播顺序</th>
+            </tr>
+          </thead>
+        </table>
+
+        <table id="categorytable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/category">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="categoryname">分类名称</th>
+              <th data-field="categoryimage">分类图片</th>
+              <th data-field="categoryorder">分类顺序</th>
+            </tr>
+          </thead>
+        </table>
+        <table id="goodtable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/good">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="goodname">商品名称</th>
+              <th data-field="goodimage">商品图片</th>
+              <th data-field="goodorder">商品顺序</th>
+              <th data-field="gooddescription">商品介绍</th>
+              <th data-field="goodprice">商品优惠价</th>
+              <th data-field="goodoriginalprice">商品原价</th>
+              <th data-field="goodstock">商品库存</th>
+              <th data-field="goodcategoryid">商品分类</th>
+            </tr>
+          </thead>
+        </table>
+        <!-- <table id="qualitytable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/quality">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="qualityname">精选名称</th>
+              <th data-field="qualityorder">精选顺序</th>
+              <th data-field="qualityimage">精选图片</th>
+            </tr>
+          </thead>
+        </table> -->
+        <table id="shoptable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/shop">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="shopname">店家名称</th>
+              <th data-field="shopposition">店家地址</th>
+              <th data-field="shopphonenumber">店家电话</th>
+              <th data-field="shopdescription">店家介绍</th>
+              <th data-field="shopimage">店家图片</th>
+            </tr>
+          </thead>
+        </table>
+        <table id="discounttable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
+          data-search="true" data-show-refresh="true" data-url="/api/getList/discount">
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="discountname">商品名称</th>
+              <th data-field="discountprice">优惠价</th>
+              <th data-field="discountoriginalprice">原价</th>
+              <th data-field="discountexpirydate">截止日期</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" tabindex="-1" role="dialog" id="deletemodal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">删除</h4>
+        </div>
+        <div class="modal-body">
+          <p>是否需要删除所选条目？</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="confirmdelete">确认</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./common/footer',{type:'index'}) %>

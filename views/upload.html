@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Upload</title>
-  <style>
-    body {
-      padding: 50px;
-      font: 14px Helvetica, Arial;
-    }
-  </style>
-</head>
-<body>
-  <h1>File Upload</h1>
-  <p>Try uploading multiple files at a time.</p>
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_csrf" value="{{csrf}}" />
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="addModalLabel">导入</h4>
+  </div>
+  <form action="/uploadxls" method="post" enctype="multipart/form-data" target="rfFrame">
+    <input type="hidden" name="_csrf" value="<%=csrf%>" />
     <input type="file" name="file" multiple>
-    <input type="submit" value="Upload">
+    <input type="submit" value="上传">
+    <iframe id="rfFrame" name="rfFrame" src="about:blank" scrolling="no"></iframe>  
   </form>
-</body>
-</html>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+  </div>

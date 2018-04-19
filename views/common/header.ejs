@@ -1,99 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
 	<meta charset="UTF-8">
-	<title>koa2-blog</title>
-	<link rel="icon" href="http://www.wclimb.site/images/avatar.png">
-	<link rel="stylesheet" href="/index.css">
+	<title><%= pagename %></title>
+	<link rel="icon" href="http://pic.58pic.com/58pic/13/68/85/15K58PICGhT_1024.jpg">
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/css/fileinput.min.css" rel="stylesheet">
 	<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-	<script>
-		function fade(txt){
-			$('.message').text(txt)
-			$('.message').animate({
-				top:0
-			})
-			setTimeout(function(){
-				$('.message').animate({
-					top: '-100%'
-				})
-			},1500)
-		}
-		$(function(){
-			$('.signout').click(()=>{
-				$.ajax({
-					url: "/signout",
-					type: "GET",
-					cache: false,
-					dataType: 'json',
-					success: function (msg) {
-						if (msg) {
-							fade('登出成功')
-							setTimeout(()=>{
-								window.location.href = "/posts"
-							},1500)	
-						}
-					},
-					error: function () {
-						alert('异常');
-					}
-				})
-			})
-		})
-	</script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+	<style>
+	.pagination{
+		margin: 10px 0;
+	}
+	#toolbar{
+		position: absolute;
+    margin-top: 50px;
+	}
+	.operatefile{
+		display: none;
+	}
+	.file-input.file-input-ajax-new{
+		margin-top: 32px;
+	}
+	
+	.svg-word-glitch {
+      	position: absolute;
+      	width: 600px;
+      	height: 200px;
+      	top: 50%;
+      	left: 50%;
+      	transform: translate(-50%, -50%);
+      }
+      .word-glitch{
+      	fill: black;
+      	filter: url(#filter);
+      	font-family: Raleway, Verdana, sans-serif, 微軟正黑體, 微软雅黑, serif, 'Droid Serif', 'Helvetica Neue', Helvetica, Arial;
+      	font-size: 80px;
+      	-webkit-font-smoothing: antialiased;
+      }
+			#rfFrame{
+				border: 0px;
+				height: 24px;
+			}
+	</style>
 </head>
 <body>
-	<header>
-		<div class="user_name">
-			<% if(session.user){ %>
-				 Hello,<%= session.user %>
-			<% } %>
-			<% if(!session.user){ %>
-				欢迎注册登录^_^
-			<% } %>
-		</div>
-		<div class="message">登录成功</div>
-		<div class="user_right">
-			<%  if(session.user){ %>
-				<div class="has_user">
-					<a target="__blank" href="https://github.com/wclimb/Koa2-blog">GitHub</a>
-					<% if(type == 'all'){ %>
-						<a class="active" href="/posts">全部文章</a>
-					<% }else{ %>
-						<a href="/posts">全部文章</a>
-					<% }%>
-					<% if(type == 'my'){ %>
-						<a class="active" href="/posts?author=<%= session.user %>">我的文章</a>
-					<% }else{ %>
-						<a href="/posts?author=<%= session.user %>">我的文章</a>
-					<% }%>
-					<% if(type == 'create'){ %>
-						<a class="active" href="/create">发表文章</a>
-					<% }else{ %>
-						<a href="/create">发表文章</a>
-					<% }%>
-					
-					<span class="signout">登出</span>
-				</div>
-			<% } %>
-			<% if(!session.user){ %>
-				<div class="none_user has_user">
-					<a target="__blank" href="https://github.com/wclimb/Koa2-blog">GitHub</a>
-					<% if(type == 'all'){ %>
-						<a class="active" href="/posts">全部文章</a>
-					<% }else{ %>
-						<a href="/posts">全部文章</a>
-					<% }%>
-					<% if(type == 'signup'){ %>
-						<a class="active" href="/signup">注册</a>
-					<% }else{ %>
-						<a href="/signup">注册</a>
-					<% }%>
-					<% if(type == 'signin'){ %>
-						<a class="active" href="/signin">登录</a>
-					<% }else{ %>
-						<a href="/signin">登录</a>
-					<% }%>
-				</div>
-			<% } %>
-		</div>
+	<% if(type!='auth'){ %>
+	<header >
+			<nav class="navbar navbar-default">
+					<div class="container-fluid">
+					  <div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						  <span class="sr-only">Toggle navigation</span>
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+						  <span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">管理系统</a>
+					  </div>
+				  
+					  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul id="navlink" class="nav navbar-nav">
+						  <li id="category" class="active"><a href="#">分类管理</a></li>
+						  <li id="good"><a href="#">商品管理</a></li>
+						  <li id="banner"><a href="#">轮播管理</a></li>
+						  <!-- <li id="quality"><a href="#">精选管理</a></li> -->
+						  <li id="shop"><a href="#">关于店家</a></li>
+						  <li id="discount"><a href="#">优惠信息</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+						  <li><a href="/logout">注销</a></li>
+						</ul>
+					  </div><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+				  </nav>
 	</header>
+	<% } %>
