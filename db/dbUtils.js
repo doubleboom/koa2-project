@@ -14,9 +14,9 @@ let findDataByUserid = function( table,  userid ) {
   return query( _sql, [ table, userid ] )
 }
 
-let findDataByPage = function( table, keys, start, end ) {
-  let  _sql =  "SELECT ?? FROM ??  LIMIT ? , ?"
-  return query( _sql, [keys,  table,  start, end ] )
+let findDataByPage = function( table, userid, start, end ) {
+  let  _sql =  "SELECT * FROM ?? where userid=?  LIMIT ? , ?"
+  return query( _sql, [table,  userid,  start, end ] )
 }
 
 

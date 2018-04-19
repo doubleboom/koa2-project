@@ -1,9 +1,12 @@
 </body>
 <% if(type!='auth'){ %>
     <script>
-        jQuery.fn.bootstrapTable.columnDefaults.formatter=function(value,row,index){
+        // jQuery.fn.bootstrapTable.columnDefaults.formatter=function(value,row,index){
+        //             // return $("<div>").text(value).html();
+        //     }
+        function escapingHTML(value, row, index) {
             return $("<div>").text(value).html();
-            }
+        }
         var imageArray = {};
         imageArray.categoryimage = "";
         // imageArray.qualityimage = "";
@@ -34,7 +37,7 @@
                 });
             }
             setSelect("category");
-            setSelect("quality");
+            // setSelect("quality");
             var operateFlag = 'add';
             $("#navlink").on("click", "li", function (e) {
                 e.stopPropagation();
