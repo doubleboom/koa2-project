@@ -14,6 +14,8 @@ module.exports=(app)=>{
         'get /wxapi/getmore/:userid':crl.wxapi.getMore,
         'get /wxapi/getdiscount/:userid':crl.wxapi.getDiscount,
         'get /wxapi/getabout/:userid':crl.wxapi.getAbout,
+        'get /wxapi/getgooddetail/:id':crl.wxapi.getGoodDetail,
+        'get /wxapi/getcategorydetail/:id':crl.wxapi.getCategoryDetail,
         'post /api/add/':crl.api.addData,
         'post /uploadxls':crl.upload.uploadXls,
         'post /uploadimage':crl.upload.uploadImage,

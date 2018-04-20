@@ -9,6 +9,11 @@ let findDataById = function( table,  id ) {
   return query( _sql, [ table, id ] )
 }
 
+let findListByItem = function( table,  item ) {
+  let  _sql =  "SELECT * FROM ?? WHERE ? "
+  return query( _sql, [ table, item ] )
+}
+
 let findDataByUserid = function( table,  userid ) {
   let  _sql =  "SELECT * FROM ?? WHERE userid = ? "
   return query( _sql, [ table, userid ] )
@@ -18,7 +23,6 @@ let findDataByPage = function( table, userid, start, end ) {
   let  _sql =  "SELECT * FROM ?? where userid=?  LIMIT ? , ?"
   return query( _sql, [table,  userid,  start, end ] )
 }
-
 
 let insertMultipleData = function( table, fileds, values ) {
   let _sql = "INSERT INTO ?? (??) VALUES ?"
@@ -61,6 +65,7 @@ module.exports = {
   findDataById,
   findDataByUserid,
   findDataByPage,
+  findListByItem,
   deleteDataById,
   deleteDataByUserid,
   insertData,
