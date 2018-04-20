@@ -1,5 +1,5 @@
 const { findUserByAcount, userLogin } = require("../db/user");
-const {insertData}=require('../db/dbUtils');
+const { insertData } = require('../db/dbUtils');
 const bcrypt = require('bcryptjs');
 
 function comparePass(userPassword, databasePassword) {
@@ -8,11 +8,11 @@ function comparePass(userPassword, databasePassword) {
 
 module.exports = {
     async queryUser(acount, password) {
-        const user= await findUserByAcount(acount);
-        if(comparePass(password,user[0].userpassword)){
+        const user = await findUserByAcount(acount);
+        if (comparePass(password, user[0].userpassword)) {
             return user;
         }
-        else{
+        else {
             return "Unrecognized user";
         }
     },

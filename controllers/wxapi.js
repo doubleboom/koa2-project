@@ -3,10 +3,10 @@ module.exports = {
         try {
             let userid = ctx.params.userid;
             let bannerList = await service.wxapiService.getListByUserid('banner', userid);
-            let categoryList= await service.wxapiService.getListByUserid('category',userid);
-            let hotList =await service.wxapiService.getListByUserid('good',userid)
+            let categoryList = await service.wxapiService.getListByUserid('category', userid);
+            let hotList = await service.wxapiService.getListByUserid('good', userid)
             ctx.type = "application/json;charset=utf-8";
-            ctx.body = {bannerList,categoryList,hotList};
+            ctx.body = { bannerList, categoryList, hotList };
         }
         catch (err) {
             console.log(err);
@@ -18,7 +18,7 @@ module.exports = {
             let userid = ctx.params.userid;
             let start = ctx.params.start;
             let end = ctx.params.end;
-            let goodList = await service.wxapiService.getListByUserid('good', userid,start,end);
+            let goodList = await service.wxapiService.getListByUserid('good', userid, start, end);
             ctx.type = "application/json;charset=utf-8";
             ctx.body = goodList;
         }
@@ -51,7 +51,7 @@ module.exports = {
             ctx.body = "fail";
         }
     },
-    async getGoodDetail(ctx, service, next){
+    async getGoodDetail(ctx, service, next) {
         try {
             let id = ctx.params.id;
             let good = await service.wxapiService.getItemById('good', id);
@@ -63,10 +63,10 @@ module.exports = {
             ctx.body = "fail";
         }
     },
-    async getCategoryDetail(ctx, service, next){
+    async getCategoryDetail(ctx, service, next) {
         try {
             let id = ctx.params.id;
-            let item={goodcategoryid:id};
+            let item = { goodcategoryid: id };
             let goodList = await service.wxapiService.getListByItem('good', item);
             ctx.type = "application/json;charset=utf-8";
             ctx.body = goodList;
