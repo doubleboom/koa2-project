@@ -13,7 +13,7 @@
           <button type="button" class="btn btn-primary" id="add" data-toggle="modal">新增</button>
           <button type="button" class="btn btn-primary" id="edit" data-toggle="modal">编辑</button>
           <button type="button" class="btn btn-danger" id="delete">删除</button>
-          <a type="button" class="btn btn-primary" data-toggle="modal" href="/uploadxls" data-target="#uploadpage" id="import">导入</a>
+          <a type="button" class="btn btn-primary operatefile" data-toggle="modal" href="/uploadxls" data-target="#uploadpage" id="import">导入</a>
           <button type="button" class="btn btn-primary operatefile" id="export">导出</button>
           <button type="button" class="btn btn-primary operatefile" id="exporttemplate">下载模板</button>
         </div>
@@ -74,9 +74,9 @@
                     <select type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodqualityid"></select>
                   </div> -->
                   <div class="form-group">
-                      <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品图片</label>
-                      <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodimage"> -->
-                      <input type="file" name="files" id="goodimage" multiple class="file-loading" />
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品图片</label>
+                    <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodimage"> -->
+                    <input type="file" name="files" id="goodimage" multiple class="file-loading" />
                   </div>
                   <div class="form-group">
                     <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类名称</label>
@@ -88,7 +88,7 @@
                   </div>
                   <div class="form-group"></div>
                   <div class="form-group">
-                      <label for="recipient-name" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类图片</label>
+                    <label for="recipient-name" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类图片</label>
                     <!-- <input class="col-xs-9 col-sm-9 col-md-9 col-lg-9" id="categoryimage" type="file" class='file'> -->
                     <!-- <input id="categoryimage"> -->
                     <input type="file" name="files" id="categoryimage" class="file-loading" />
@@ -204,7 +204,7 @@
             </tr>
           </thead>
         </table> -->
-        <table id="shoptable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true" 
+        <table id="shoptable" data-toggle="table" data-height="460" data-pagination="true" data-page-size="10" data-resizable="true"
           data-search="true" data-show-refresh="true" data-url="/api/getList/shop">
           <thead>
             <tr>
@@ -225,7 +225,8 @@
               <th data-field="discountname">商品名称</th>
               <th data-field="discountprice">优惠价</th>
               <th data-field="discountoriginalprice">原价</th>
-              <th data-field="discountexpirydate">截止日期</th>
+              <th data-field="discountexpirydate" data-formatter='escapingDate'>截止日期</th>
+              <th data-field="discountcategory" data-formatter="escapingHTML">商品分类</th>
             </tr>
           </thead>
         </table>

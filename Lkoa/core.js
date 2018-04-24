@@ -3,8 +3,7 @@ const fs = require('fs');
 const koaRoute = require('koa-router');
 const path = require('path');
 
-const config=require('../config/config');
-const rootPath=path.resolve(__dirname, '..')
+const rootPath = path.resolve(__dirname, '..')
 
 class LkoaLoader {
     loader(path) {
@@ -39,12 +38,12 @@ class Lkoa extends koa {
         controllers.forEach((crl) => {
             this.controllers[crl.name] = crl.modules;
         });
-        this.routers =require('./routers')(this);
-        this.servicesTemp=this.getServices(this);
+        this.routers = require('./routers')(this);
+        this.servicesTemp = this.getServices(this);
         this.getServices(this);
     }
 
-    getServices(app){
+    getServices(app) {
         const servicesTemp = {};
         app.loader.loadServices().forEach((service) => {
             servicesTemp[service.name] = service.modules;
@@ -53,17 +52,17 @@ class Lkoa extends koa {
     }
 
     setRouters() {
-        const self=this;
+        const self = this;
         const _setRouters = (app) => {
-            const routers=self.routers;
+            const routers = self.routers;
             Object.keys(routers).forEach((key) => {
                 const [method, path] = key.split(' ');
-                app.router[method](path,async(ctx,next) => {
-                    try{
+                app.router[method](path, async (ctx, next) => {
+                    try {
                         const handler = routers[key];
-                        await handler(ctx, self.servicesTemp,next);
+                        await handler(ctx, self.servicesTemp, next);
                     }
-                    catch(err){
+                    catch (err) {
                         next();
                     }
                 })
@@ -73,18 +72,18 @@ class Lkoa extends koa {
         self.use(_setRouters(self));
     }
 
-    setErroRouters(app){
-        const self=this.controllers;
+    setErroRouters(app) {
+        const self = this.controllers;
         app.use(async (ctx) => {
             switch (ctx.status) {
-              case 404:
-                await self.notFoundPage.notFound(ctx, app.servicesTemp);
-                break;
-              case 500:
-                await self.notFoundPage.inernalErro(ctx, app.servicesTemp);
-                break;
+                case 404:
+                    await self.notFoundPage.notFound(ctx, app.servicesTemp);
+                    break;
+                case 500:
+                    await self.notFoundPage.inernalErro(ctx, app.servicesTemp);
+                    break;
             }
-          })
+        })
     }
 }
 

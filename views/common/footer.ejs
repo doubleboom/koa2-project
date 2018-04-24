@@ -7,6 +7,24 @@
         function escapingHTML(value, row, index) {
             return $("<div>").text(value).html();
         }
+        function escapingDate(value, row, index) {
+            if (value.trim() != "")
+                return new Date(value).toLocaleDateString();
+        }
+            function urlencode(data) {
+                    var _result = [];
+                    for (var key in data) {
+                        var value = data[key];
+                        if (value.constructor == Array) {
+                            value.forEach(function (_value) {
+                                _result.push(key + "=" + _value);
+                            });
+                        } else {
+                            _result.push(key + '=' + value);
+                        }
+                    }
+                    return _result.join('&');
+                }
         var imageArray = {};
         imageArray.categoryimage = "";
         // imageArray.qualityimage = "";
@@ -120,11 +138,15 @@
             $("#delete").click(function (e) {
                 var $table = $("#navlink li.active")[0].id;
                 var selections = $("#" + $table + "table").bootstrapTable('getSelections');
-                if (selections.length === 1) {
+                if (selections.length != 0) {
                     $("#deletemodal").modal("show");
+                     var selectionId = [];
+                    selections.forEach(function (item) {
+                        selectionId.push(item.id);
+                    });
                     $("#confirmdelete").click(function () {
                         $.ajax({
-                            url: "/api/delete/" + $table + "/" + selections[0].id + "?_csrf=" + $("#csrf").val(),
+                            url: "/api/delete/?table=" + $table + "&" + urlencode({ids: selectionId}) + "&_csrf=" + $("#csrf").val(),
                             method: "delete",
                             success: function (data) {
                                 if (data != "fail") {
@@ -136,7 +158,7 @@
                     })
                 }
                 else {
-                    alert("请选择一条数据进行删除，请勿多选");
+                    alert("请选择一条或者多条数据进行删除");
                 }
             })
 

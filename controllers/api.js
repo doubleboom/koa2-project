@@ -1,3 +1,5 @@
+const koaErrorLogger = require('../Lkoa/log4').koaErrorLogger();
+
 module.exports = {
     async getList(ctx, service, next) {
         try {
@@ -7,7 +9,7 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -20,21 +22,19 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
     async deleteById(ctx, service, next) {
-        let table = ctx.params.table;
-        let id = ctx.params.id;
+        let table = ctx.query.table;
+        let ids = ctx.query.ids;
         try {
-            let item = await service.apiService.getItemById(table, id);
-            if (item.length != 0 && item[0].userid === ctx.state.user)
-                await service.apiService.deleteById(table, id);
+            await service.apiService.deleteById(table, ids, ctx.state.user);
             ctx.body = "ok";
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -51,7 +51,7 @@ module.exports = {
             ctx.body = "ok";
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -70,7 +70,7 @@ module.exports = {
             }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },

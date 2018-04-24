@@ -1,48 +1,48 @@
 const send = require('koa-send');
-const path=require('path');
+const path = require('path');
 
 module.exports = {
     async uploadXls(ctx, service, next) {
         try {
-            let filePath = await service.uploadService.saveXlsFile(ctx,'excel');
-            await service.uploadService.readXlsxToDb(filePath,ctx);
-            ctx.body='ok';
+            let filePath = await service.uploadService.saveXlsFile(ctx, 'excel');
+            await service.uploadService.readXlsxToDb(filePath, ctx);
+            ctx.body = 'ok';
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async uploadImage(ctx, service, next) {
         try {
-            let filePath = await service.uploadService.saveImageFile(ctx,'image');
-            ctx.body={url:ctx.origin+'/upload/'+path.basename(filePath)};
+            let filePath = await service.uploadService.saveImageFile(ctx, 'image');
+            ctx.body = { url: ctx.origin + '/upload/' + path.basename(filePath) };
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async deleteImage(ctx, service, next) {
         try {
-            ctx.body={params:ctx.params};
+            ctx.body = { params: ctx.params };
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async download(ctx, service, next) {
         try {
-            let filePath="";
-            if(ctx.querystring!="template"){
-                filePath=await service.uploadService.getFilePath(ctx.state.user);
+            let filePath = "";
+            if (ctx.querystring != "template") {
+                filePath = await service.uploadService.getFilePath(ctx.state.user);
             }
-            else{
-                filePath="./public/excel/template.xls";
+            else {
+                filePath = "./public/excel/template.xls";
             }
-            ctx.set('Content-disposition','attachment;filename='+encodeURIComponent(path.basename(filePath)));
+            ctx.set('Content-disposition', 'attachment;filename=' + encodeURIComponent(path.basename(filePath)));
             await send(ctx, filePath);
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async index(ctx, service, next) {
@@ -50,7 +50,7 @@ module.exports = {
             await ctx.render('upload', { csrf: ctx.csrf });
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     }
 }
