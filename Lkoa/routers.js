@@ -22,7 +22,7 @@ module.exports = (app) => {
         'post /api/deleteimage': crl.upload.deleteImage,
         'post /auth/login': crl.auth.postLogin,
         'post /auth/register': crl.auth.postRegister,
-        'delete /api/delete/:table/:id': crl.api.deleteById,
+        'delete /api/delete': crl.api.deleteById,
         'put /api/edit': crl.api.editData,
         'get /*': crl.notFoundPage.notFoundPage  //错误页面处理
     }

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const xlsx = require('node-xlsx')
-const { findDataById, updateData, deleteDataByUserid, insertMultipleData } = require('../db/dbUtils');
+const { insertOrUpdateMultipleData,findDataById, updateData, deleteDataByUserid, insertMultipleData } = require('../db/dbUtils');
 
 module.exports = {
     async saveXlsFile(ctx) {
@@ -34,7 +34,7 @@ module.exports = {
         }
         if (discountModelArray.length != 0) {
             await deleteDataByUserid("discount", ctx.state.user);
-            await insertMultipleData("discount", ['userid', 'discountname', 'discountprice', 'discountoriginalprice', 'discountexpirydate'], discountModelArray);
+            await insertOrUpdateMultipleData("discount", ['userid', 'discountname', 'discountprice', 'discountoriginalprice', 'discountexpirydate','discountcategory'], discountModelArray);
         }
     },
     async getFilePath(id) {

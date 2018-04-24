@@ -13,7 +13,7 @@
           <button type="button" class="btn btn-primary" id="add" data-toggle="modal">新增</button>
           <button type="button" class="btn btn-primary" id="edit" data-toggle="modal">编辑</button>
           <button type="button" class="btn btn-danger" id="delete">删除</button>
-          <a type="button" class="btn btn-primary" data-toggle="modal" href="/uploadxls" data-target="#uploadpage" id="import">导入</a>
+          <a type="button" class="btn btn-primary operatefile" data-toggle="modal" href="/uploadxls" data-target="#uploadpage" id="import">导入</a>
           <button type="button" class="btn btn-primary operatefile" id="export">导出</button>
           <button type="button" class="btn btn-primary operatefile" id="exporttemplate">下载模板</button>
         </div>
@@ -225,7 +225,8 @@
               <th data-field="discountname">商品名称</th>
               <th data-field="discountprice">优惠价</th>
               <th data-field="discountoriginalprice">原价</th>
-              <th data-field="discountexpirydate">截止日期</th>
+              <th data-field="discountexpirydate" data-formatter='escapingDate'>截止日期</th>
+              <th data-field="discountcategory" data-formatter="escapingHTML">商品分类</th>
             </tr>
           </thead>
         </table>

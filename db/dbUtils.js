@@ -29,6 +29,13 @@ let insertMultipleData = function (table, fileds, values) {
   return query(_sql, [table, fileds, values])
 }
 
+let insertOrUpdateMultipleData = function (table, fileds, values) {
+  let _sql = "INSERT INTO ?? (??) VALUES ? on duplicate key "
+    + "update userid = values(userid),discountname = values(discountname),discountprice = values(discountprice),discountoriginalprice = values(discountoriginalprice),"
+    + "discountexpirydate = values(discountexpirydate),discountcategory = values(discountcategory);"
+  return query(_sql, [table, fileds, values])
+}
+
 let insertData = function (table, values) {
   let _sql = "INSERT INTO ?? SET ?"
   return query(_sql, [table, values])
@@ -40,9 +47,9 @@ let updateData = function (table, values, id) {
 }
 
 
-let deleteDataById = function (table, id) {
-  let _sql = "DELETE FROM ?? WHERE id = ?"
-  return query(_sql, [table, id])
+let deleteDataById = function (table, ids,userid) {
+  let _sql = "DELETE FROM ?? WHERE id in (?) and userid=?"
+  return query(_sql, [table, ids,userid])
 }
 
 let deleteDataByUserid = function (table, userid) {
@@ -70,6 +77,7 @@ module.exports = {
   deleteDataByUserid,
   insertData,
   insertMultipleData,
+  insertOrUpdateMultipleData,
   updateData,
   select,
   count

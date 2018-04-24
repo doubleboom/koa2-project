@@ -6,8 +6,8 @@ module.exports = {
     async getItemById(table, id) {
         return await findDataById(table, id);
     },
-    async deleteById(table, id) {
-        return await deleteDataById(table, id);
+    async deleteById(table, ids,userid) {
+        return await deleteDataById(table, ids, userid);
     },
     async addItem(table, data) {
         return await insertData(table, data);
