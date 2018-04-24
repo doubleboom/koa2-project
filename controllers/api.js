@@ -1,3 +1,5 @@
+const koaErrorLogger = require('../Lkoa/log4').koaErrorLogger();
+
 module.exports = {
     async getList(ctx, service, next) {
         try {
@@ -7,7 +9,7 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -20,7 +22,7 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -32,7 +34,7 @@ module.exports = {
             ctx.body = "ok";
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -49,7 +51,7 @@ module.exports = {
             ctx.body = "ok";
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -68,7 +70,7 @@ module.exports = {
             }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },

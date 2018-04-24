@@ -47,9 +47,9 @@ let updateData = function (table, values, id) {
 }
 
 
-let deleteDataById = function (table, ids,userid) {
+let deleteDataById = function (table, ids, userid) {
   let _sql = "DELETE FROM ?? WHERE id in (?) and userid=?"
-  return query(_sql, [table, ids,userid])
+  return query(_sql, [table, ids, userid])
 }
 
 let deleteDataByUserid = function (table, userid) {

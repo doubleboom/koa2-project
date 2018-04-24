@@ -18,7 +18,9 @@ function MountPassport(passport) {
 }
 
 function MountAuthToContext(ctx, next) {
-    if (ctx.isAuthenticated() || (ctx.path === '/auth/login' || ctx.path === '/login' || ctx.path.search('wxapi')!=-1)) return next();
+    if (ctx.isAuthenticated() || (ctx.path === '/auth/login' || ctx.path === '/login' || ctx.path === '/register' 
+    || ctx.path === '/auth/register' || ctx.path.search('wxapi')!=-1)) 
+    return next();
     else ctx.redirect('/login');
 }
 

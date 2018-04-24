@@ -9,7 +9,7 @@ module.exports = {
             ctx.body = { bannerList, categoryList, hotList };
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -23,7 +23,7 @@ module.exports = {
             ctx.body = goodList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -35,7 +35,7 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -47,7 +47,7 @@ module.exports = {
             ctx.body = bannerList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -59,7 +59,7 @@ module.exports = {
             ctx.body = good[0];
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     },
@@ -72,7 +72,7 @@ module.exports = {
             ctx.body = goodList;
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
             ctx.body = "fail";
         }
     }

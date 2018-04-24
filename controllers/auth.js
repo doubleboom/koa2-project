@@ -1,15 +1,17 @@
+const koaErrorLogger = require('../Lkoa/log4').koaErrorLogger();
+
 module.exports = {
     async getRegister(ctx, service, next) {
         try {
-            if (ctx.isAuthenticated()) {
-                ctx.redirect('/');
-            }
-            else {
-                await ctx.render('auth/Register', { csrf: ctx.csrf });
-            }
+            // if (ctx.isAuthenticated()) {
+            //     ctx.redirect('/');
+            // }
+            // else {
+            await ctx.render('auth/Register', { csrf: ctx.csrf });
+            // }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async getLogin(ctx, service, next) {
@@ -22,7 +24,7 @@ module.exports = {
             }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async postLogin(ctx, service, next) {
@@ -38,13 +40,14 @@ module.exports = {
             }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async postRegister(ctx, service, next) {
         let user = ctx.request.body;
         try {
-            if (user.acount.trim() !== "" || user.password.trim() !== "") {
+            let dbuser = service.apiService.getItemById('user', ctx.status.user)[0];
+            if ((dbuser.level === 1) && (user.acount.trim() !== "" && user.password.trim() !== "")) {
                 await service.authService.addUser(user.acount, user.password);
                 ctx.body = "yes";
             } else {
@@ -53,7 +56,7 @@ module.exports = {
             }
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async logOut(ctx) {

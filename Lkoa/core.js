@@ -3,7 +3,6 @@ const fs = require('fs');
 const koaRoute = require('koa-router');
 const path = require('path');
 
-const config = require('../config/config');
 const rootPath = path.resolve(__dirname, '..')
 
 class LkoaLoader {

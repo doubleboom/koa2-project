@@ -1,4 +1,4 @@
-const logger = require('koa-logger');
+// const logger = require('koa-logger');
 const serve = require('koa-static');
 const koaBody = require('koa-body');
 const views = require('koa-views');
@@ -8,15 +8,18 @@ const session = require('koa-session');
 const CSRF = require('koa-csrf');
 const bcrypt = require('bcryptjs');
 
+const koaHttpLogger = require('./Lkoa/log4').koaHttpLogger();
 const lkoa = require('./Lkoa/core');
 const lib = require('./Lkoa/lib');
+
 const staticPath = path.resolve(__dirname, './public');
 const viewsPath = path.resolve(__dirname, './views');
 
 lib.MountPassport(passport);
 const app = new lkoa();
-app.use(logger());
 
+// app.use(logger());
+app.use(koaHttpLogger);
 app.keys = ['mysession', 'mycsrf'];
 app.use(koaBody({
     multipart: true,
@@ -41,5 +44,6 @@ app.use(serve(staticPath));  //静态服务器的路由需要放在错误路由�
 
 app.setRouters();
 app.setErroRouters(app);
+
 
 app.listen(3000, '127.0.0.1', () => console.log('服务器已经启动:http://localhost:3000'));

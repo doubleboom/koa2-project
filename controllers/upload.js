@@ -9,7 +9,7 @@ module.exports = {
             ctx.body = 'ok';
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async uploadImage(ctx, service, next) {
@@ -18,7 +18,7 @@ module.exports = {
             ctx.body = { url: ctx.origin + '/upload/' + path.basename(filePath) };
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async deleteImage(ctx, service, next) {
@@ -26,7 +26,7 @@ module.exports = {
             ctx.body = { params: ctx.params };
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async download(ctx, service, next) {
@@ -42,7 +42,7 @@ module.exports = {
             await send(ctx, filePath);
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     },
     async index(ctx, service, next) {
@@ -50,7 +50,7 @@ module.exports = {
             await ctx.render('upload', { csrf: ctx.csrf });
         }
         catch (err) {
-            console.log(err);
+            koaErrorLogger.error(err.stack);
         }
     }
 }

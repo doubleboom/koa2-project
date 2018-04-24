@@ -1,5 +1,5 @@
 module.exports = {
     async getIndex() {
-        console.log('getindex--service');
+        // console.log('getindex--service');
     }
 };

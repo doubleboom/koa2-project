@@ -1,8 +1,8 @@
 module.exports = {
     async notFound() {
-        console.log('notFoundPage');
+        // console.log('notFoundPage');
     },
     async inernalErro() {
-        console.log('inernalErro');
+        // console.log('inernalErro');
     }
 };
