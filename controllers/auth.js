@@ -47,7 +47,7 @@ module.exports = {
         let user = ctx.request.body;
         try {
             let dbuser = service.apiService.getItemById('user', ctx.status.user)[0];
-            if ((dbuser.level === 1) && (user.acount.trim() !== "" && user.password.trim() !== "")) {
+            if ((dbuser.level === 1 && dbuser.acount !== user.acount.trim()) && (user.acount.trim() !== "" && user.password.trim() !== "")) {
                 await service.authService.addUser(user.acount, user.password);
                 ctx.body = "yes";
             } else {
