@@ -1,7 +1,7 @@
 <%- include("./common/header",{type:'index',session:{},pagename:'管理界面'}) %>
   <input hidden id="csrf" value="<%= csrf %>">
   <div class="container" hidden>
-    <div class="modal fade" tabindex="-1" role="dialog" id="uploadpage" aria-labelledby="myLargeModalLabel">
+    <div class="modal fade" tabindex="-1" role="dialog" id="uploadpage" data-backdrop="static" aria-labelledby="myLargeModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
         </div>
