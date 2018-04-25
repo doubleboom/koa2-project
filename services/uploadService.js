@@ -7,7 +7,7 @@ module.exports = {
     async saveXlsFile(ctx) {
         const file = ctx.request.body.files.file;
         const reader = fs.createReadStream(file.path);
-        const stream = fs.createWriteStream('./public/upload/' + Date.now() + file.name);
+        const stream = fs.createWriteStream(path.resolve('./public/upload/' + Date.now() + file.name));
         await reader.pipe(stream);
         // console.log('uploading %s -> %s', file.name, stream.path);
         await updateData("user", { userexcel: stream.path }, ctx.state.user);
@@ -18,7 +18,7 @@ module.exports = {
     async saveImageFile(ctx) {
         const file = ctx.request.body.files.files;
         const reader = fs.createReadStream(file.path);
-        const stream = fs.createWriteStream('./public/upload/' + Date.now() + file.name);
+        const stream = fs.createWriteStream(path.resolve('./public/upload/' + Date.now() + file.name));
         await reader.pipe(stream);
         // console.log(file.path);
         fs.unlink(file.path);

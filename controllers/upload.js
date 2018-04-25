@@ -36,7 +36,7 @@ module.exports = {
                 filePath = await service.uploadService.getFilePath(ctx.state.user);
             }
             else {
-                filePath = "./public/excel/template.xls";
+                filePath = path.resolve("./public/excel/template.xls");
             }
             ctx.set('Content-disposition', 'attachment;filename=' + encodeURIComponent(path.basename(filePath)));
             await send(ctx, filePath);
