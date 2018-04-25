@@ -256,6 +256,8 @@
 
             $('#uploadpage').on('hidden.bs.modal', function (e) {
                 $("#discounttable").bootstrapTable('refresh');
+                $('#rfFrame').attr('src', $('#rfFrame').attr('src'));
+                $("#uploadpage [type='file']").val('')
             })
 
             function changeiFrameStyle() {
