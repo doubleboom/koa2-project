@@ -77,8 +77,17 @@
             function setTableActive($el) {
                 $(".bootstrap-table").hide();
                 $(".bootstrap-table").has($("#" + $el.id + "table")).show();
-                if ($el.id === "discount") $(".operatefile").show();
-                else $(".operatefile").hide();
+                if ($el.id === "discount") 
+                {
+                    $("#add").hide();
+                    $("#edit").hide();
+                    $(".operatefile").show();
+                }
+                else {
+                    $("#add").show();
+                    $("#edit").show();
+                    $(".operatefile").hide();
+                }
             }
             function setPanelTitle($el) {
                 $(".panel-heading").get(0).innerText = $el.innerText;
