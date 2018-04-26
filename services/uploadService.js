@@ -12,7 +12,7 @@ module.exports = {
         // console.log('uploading %s -> %s', file.name, stream.path);
         await updateData("user", { userexcel: stream.path }, ctx.state.user);
         // console.log(file.path);
-        fs.unlink(file.path);
+        fs.unlinkSync(file.path);
         return path.resolve(__dirname, '../', stream.path);
     },
     async saveImageFile(ctx) {
@@ -21,7 +21,7 @@ module.exports = {
         const stream = fs.createWriteStream(path.resolve('./public/upload/' + Date.now() + file.name));
         await reader.pipe(stream);
         // console.log(file.path);
-        fs.unlink(file.path);
+        fs.unlinkSync(file.path);
         // console.log('uploading %s -> %s', file.name, stream.path);
         return path.resolve(__dirname, '../', stream.path);
     },
