@@ -28,6 +28,9 @@ module.exports = {
         let discountModelArray = [];
         for (let i = 1; i < data.length; i++) {
             discountModel = data[i];
+            let validateModel=discountModel.filter(function (value) { return value != null && value != undefined});
+            if(validateModel.length!=data[0].length)
+                continue;
             discountModel[3] = new Date(1900, 0, discountModel[3] - 1);
             discountModel.unshift(ctx.state.user);
             discountModelArray.push(discountModel);
