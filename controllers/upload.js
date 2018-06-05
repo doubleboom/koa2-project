@@ -15,7 +15,7 @@ module.exports = {
     async uploadImage(ctx, service, next) {
         try {
             let filePath = await service.uploadService.saveImageFile(ctx, 'image');
-            ctx.body = { url: ctx.origin + '/upload/' + path.basename(filePath) };
+            ctx.body = { url: 'https://' + ctx.host +  '/upload/' + path.basename(filePath) };
         }
         catch (err) {
             koaErrorLogger.error(err.stack);
