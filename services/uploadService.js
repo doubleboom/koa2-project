@@ -9,7 +9,7 @@ module.exports = {
         const reader = fs.createReadStream(file.path);
         const stream = fs.createWriteStream(path.resolve('./public/upload/' + Date.now() + file.name));
         await reader.pipe(stream);
-        await updateData("user", { userexcel: stream.path }, ctx.state.user);
+        await updateData("user", { userexcel: 'public/upload/'+path.basename(stream.path) }, ctx.state.user);
         fs.unlinkSync(file.path);
         return path.resolve(__dirname, '../', stream.path);
     },
