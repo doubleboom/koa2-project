@@ -42,7 +42,7 @@ module.exports = {
     async getAbout(ctx, service, next) {
         try {
             let userid = ctx.params.userid;
-            let bannerList = await service.wxapiService.getListByUserid('shop', ctx.state.user);
+            let bannerList = await service.wxapiService.getListByUserid('shop', userid);
             ctx.type = "application/json;charset=utf-8";
             ctx.body = bannerList;
         }

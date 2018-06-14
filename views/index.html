@@ -75,8 +75,11 @@
                   </div> -->
                   <div class="form-group">
                     <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品图片</label>
-                    <!-- <input type="text" class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodimage"> -->
                     <input type="file" name="files" id="goodimage" multiple class="file-loading" />
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">详情图片</label>
+                    <input type="file" name="files" id="gooddetailimage" multiple class="file-loading" />
                   </div>
                   <div class="form-group">
                     <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">分类名称</label>
@@ -164,8 +167,8 @@
             <tr>
               <th data-field="state" data-checkbox="true"></th>
               <th data-field="bannername" data-formatter="escapingHTML">轮播名称</th>
-              <th data-field="bannerimage">轮播图片</th>
-              <th data-field="bannerorder">轮播顺序</th>
+              <th data-field="bannerimage" data-formatter="escapingHTML">轮播图片</th>
+              <th data-field="bannerorder" data-formatter="escapingHTML">轮播顺序</th>
             </tr>
           </thead>
         </table>
@@ -176,8 +179,8 @@
             <tr>
               <th data-field="state" data-checkbox="true"></th>
               <th data-field="categoryname" data-formatter="escapingHTML">分类名称</th>
-              <th data-field="categoryimage">分类图片</th>
-              <th data-field="categoryorder">分类顺序</th>
+              <th data-field="categoryimage" data-formatter="escapingHTML">分类图片</th>
+              <th data-field="categoryorder" data-formatter="escapingHTML">分类顺序</th>
             </tr>
           </thead>
         </table>
@@ -187,12 +190,13 @@
             <tr>
               <th data-field="state" data-checkbox="true"></th>
               <th data-field="goodname" data-formatter="escapingHTML">商品名称</th>
-              <th data-field="goodimage">商品图片</th>
-              <th data-field="goodorder">商品顺序</th>
+              <th data-field="goodimage" data-formatter="escapingHTML">商品图片</th>
+              <th data-field="gooddetailimage" data-formatter="escapingHTML">详情图片</th>
+              <th data-field="goodorder" data-formatter="escapingHTML">商品顺序</th>
               <th data-field="gooddescription" data-formatter="escapingHTML">商品介绍</th>
-              <th data-field="goodprice">商品优惠价</th>
-              <th data-field="goodoriginalprice">商品原价</th>
-              <th data-field="goodstock">商品库存</th>
+              <th data-field="goodprice" data-formatter="escapingHTML">商品优惠价</th>
+              <th data-field="goodoriginalprice" data-formatter="escapingHTML">商品原价</th>
+              <th data-field="goodstock" data-formatter="escapingHTML">商品库存</th>
               <th data-field="goodcategoryid" data-formatter="escapingHTML">商品分类</th>
             </tr>
           </thead>
@@ -226,10 +230,10 @@
           <thead>
             <tr>
               <th data-field="state" data-checkbox="true"></th>
-              <th data-field="discountname">商品名称</th>
-              <th data-field="discountprice">优惠价</th>
-              <th data-field="discountoriginalprice">原价</th>
-              <th data-field="discountexpirydate" data-formatter='escapingDate'>截止日期</th>
+              <th data-field="discountname" data-formatter="escapingHTML">商品名称</th>
+              <th data-field="discountprice" data-formatter="escapingHTML">优惠价</th>
+              <th data-field="discountoriginalprice" data-formatter="escapingHTML">原价</th>
+              <th data-field="discountexpirydate" data-formatter="escapingHTML">活动公告</th>
               <th data-field="discountcategory" data-formatter="escapingHTML">商品分类</th>
             </tr>
           </thead>

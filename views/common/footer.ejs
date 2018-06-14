@@ -1,41 +1,36 @@
 </body>
 <% if(type!='auth'){ %>
     <script>
-        // jQuery.fn.bootstrapTable.columnDefaults.formatter=function(value,row,index){
-        //             // return $("<div>").text(value).html();
-        //     }
         function escapingHTML(value, row, index) {
-            return $("<div>").text(value).html();
+            var htmeText = $("<div>").text(value).html();
+            return '<span title="' + htmeText + '">' + htmeText + '</span>';
         }
         function escapingDate(value, row, index) {
             if (value.trim() != "")
                 return new Date(value).toLocaleDateString();
         }
-            function urlencode(data) {
-                    var _result = [];
-                    for (var key in data) {
-                        var value = data[key];
-                        if (value.constructor == Array) {
-                            value.forEach(function (_value) {
-                                _result.push(key + "=" + _value);
-                            });
-                        } else {
-                            _result.push(key + '=' + value);
-                        }
-                    }
-                    return _result.join('&');
+        function urlencode(data) {
+            var _result = [];
+            for (var key in data) {
+                var value = data[key];
+                if (value.constructor == Array) {
+                    value.forEach(function (_value) {
+                        _result.push(key + "=" + _value);
+                    });
+                } else {
+                    _result.push(key + '=' + value);
                 }
+            }
+            return _result.join('&');
+        }
         var imageArray = {};
         imageArray.categoryimage = "";
-        // imageArray.qualityimage = "";
+        imageArray.gooddetailimage = "";
         imageArray.shopimage = "";
         imageArray.goodimage = "";
         imageArray.bannerimage = "";
         imageArray.discountimage = "";
         $(function () {
-            // $("#qualitytable").on("load-success.bs.table", function (params) {
-            //     $(this).bootstrapTable("getData");
-            // });
             $('.container').show();
             $("#export").click(function () {
                 location.href = '/download';
@@ -55,7 +50,6 @@
                 });
             }
             setSelect("category");
-            // setSelect("quality");
             var operateFlag = 'add';
             $("#navlink").on("click", "li", function (e) {
                 e.stopPropagation();
@@ -77,8 +71,7 @@
             function setTableActive($el) {
                 $(".bootstrap-table").hide();
                 $(".bootstrap-table").has($("#" + $el.id + "table")).show();
-                if ($el.id === "discount") 
-                {
+                if ($el.id === "discount") {
                     $("#add").hide();
                     $("#edit").hide();
                     $(".operatefile").show();
@@ -141,6 +134,8 @@
                 operateFlag = 'add';
                 setInputsShow();
                 initFileUpload($table + "image", [], []);
+                if ($table === "good")
+                    initFileUpload($table + "detailimage", [], []);
                 $('#addModal').modal('show');
             })
 
@@ -149,13 +144,13 @@
                 var selections = $("#" + $table + "table").bootstrapTable('getSelections');
                 if (selections.length != 0) {
                     $("#deletemodal").modal("show");
-                     var selectionId = [];
+                    var selectionId = [];
                     selections.forEach(function (item) {
                         selectionId.push(item.id);
                     });
                     $("#confirmdelete").click(function () {
                         $.ajax({
-                            url: "/api/delete/?table=" + $table + "&" + urlencode({ids: selectionId}) + "&_csrf=" + $("#csrf").val(),
+                            url: "/api/delete/?table=" + $table + "&" + urlencode({ ids: selectionId }) + "&_csrf=" + $("#csrf").val(),
                             method: "delete",
                             success: function (data) {
                                 if (data != "fail") {
@@ -201,6 +196,21 @@
                                 })
                             }
                             initFileUpload($table + "image", initialPreview, initialPreviewConfig);
+                            if ($table === "good"){
+                                initImage = imageArray[$table + "detailimage"].split(',');
+                                // imageArray[$table + "image"]="";
+                                initialPreview = [];
+                                initialPreviewConfig = [];
+                                if (initImage === 1)
+                                    initialPreview.push("<img src='" + initImage[0] + "' class='file-preview-image kv-preview-data'>");
+                                else {
+                                    initImage.forEach(function (item) {
+                                        initialPreviewConfig.push({ key: item });
+                                        initialPreview.push("<img src='" + item + "' class='file-preview-image kv-preview-data'>");
+                                    })
+                                }
+                                initFileUpload($table + "detailimage", initialPreview, initialPreviewConfig);
+                            }
                             modal = $('#addModal');
                             modal.find('.modal-title').text('编辑');
                             modal.modal('show');
@@ -259,8 +269,16 @@
             $('#addModal').on('hidden.bs.modal', function (e) {
                 var table = $("#navlink li.active")[0].id;
                 $("#addModal input").val("");
-                imageArray[table + "image"] = "";
-                $("#" + table + "image").fileinput('destroy');
+                if (table === "good"){
+                    imageArray[table + "image"] = "";
+                    imageArray[table + "detailimage"] = "";
+                    $("#" + table + "image").fileinput('destroy');
+                    $("#" + table + "detailimage").fileinput('destroy');
+                }
+                else{
+                    imageArray[table + "image"] = "";
+                    $("#" + table + "image").fileinput('destroy');
+                }
             })
 
             $('#uploadpage').on('hidden.bs.modal', function (e) {

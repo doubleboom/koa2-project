@@ -31,13 +31,13 @@ module.exports = {
             let validateModel=discountModel.filter(function (value) { return value != null && value != undefined});
             if(validateModel.length!=data[0].length)
                 continue;
-            discountModel[3] = new Date(1900, 0, discountModel[3] - 1);
+            discountModel.push(new Date());
             discountModel.unshift(ctx.state.user);
             discountModelArray.push(discountModel);
         }
         if (discountModelArray.length != 0) {
             await deleteDataByUserid("discount", ctx.state.user);
-            await insertOrUpdateMultipleData("discount", ['userid', 'discountname', 'discountprice', 'discountoriginalprice', 'discountexpirydate','discountcategory'], discountModelArray);
+            await insertOrUpdateMultipleData("discount", ['userid', 'discountname', 'discountprice', 'discountoriginalprice', 'discountexpirydate','discountcategory','createtime'], discountModelArray);
         }
     },
     async getFilePath(id) {

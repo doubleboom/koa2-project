@@ -32,7 +32,7 @@ let insertMultipleData = function (table, fileds, values) {
 let insertOrUpdateMultipleData = function (table, fileds, values) {
   let _sql = "INSERT INTO ?? (??) VALUES ? on duplicate key "
     + "update userid = values(userid),discountname = values(discountname),discountprice = values(discountprice),discountoriginalprice = values(discountoriginalprice),"
-    + "discountexpirydate = values(discountexpirydate),discountcategory = values(discountcategory);"
+    + "discountexpirydate = values(discountexpirydate),discountcategory = values(discountcategory),createtime = values(createtime);"
   return query(_sql, [table, fileds, values])
 }
 

@@ -47,6 +47,7 @@ module.exports = {
             delete params.id;
             let data = params;
             data.userid = ctx.state.user;
+            data.createtime=new Date();
             await service.apiService.addItem(table, data);
             ctx.body = "ok";
         }
@@ -65,6 +66,7 @@ module.exports = {
                 delete params._csrf;
                 delete params.table;
                 delete params.id;
+                params.createtime = new Date();
                 await service.apiService.editItem(table, params, id);
                 ctx.body = "ok";
             }
