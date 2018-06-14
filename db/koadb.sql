@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: koadb
 -- ------------------------------------------------------
--- Server version	5.7.22-0ubuntu0.16.04.1
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,10 +28,11 @@ CREATE TABLE `banner` (
   `bannerimage` varchar(300) NOT NULL,
   `bannerorder` int(11) NOT NULL,
   `bannername` varchar(45) NOT NULL,
+  `createtime` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_userid_idx` (`userid`),
   CONSTRAINT `FK_userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,10 +48,11 @@ CREATE TABLE `category` (
   `categoryimage` varchar(300) DEFAULT NULL,
   `categoryorder` int(11) NOT NULL,
   `categoryname` varchar(45) NOT NULL,
+  `createtime` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_userid_idx` (`userid`),
   CONSTRAINT `FK_touserid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,13 +68,14 @@ CREATE TABLE `discount` (
   `discountname` varchar(45) NOT NULL,
   `discountprice` float DEFAULT NULL,
   `discountoriginalprice` float NOT NULL,
-  `discountexpirydate` date NOT NULL,
+  `discountexpirydate` varchar(500) NOT NULL,
   `discountcategory` varchar(45) NOT NULL,
+  `createtime` date NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `discountname_UNIQUE` (`discountname`),
   KEY `FK_discountuserid_idx` (`userid`),
   CONSTRAINT `FK_discountuserid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,18 +89,20 @@ CREATE TABLE `good` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `goodcategoryid` int(11) NOT NULL,
   `goodname` varchar(45) NOT NULL,
-  `goodimage` varchar(300) NOT NULL,
+  `goodimage` varchar(1000) NOT NULL,
   `goodorder` int(11) NOT NULL,
-  `gooddescription` varchar(10000) DEFAULT NULL,
+  `gooddescription` varchar(1000) DEFAULT NULL,
   `goodprice` float NOT NULL,
   `goodoriginalprice` float NOT NULL,
   `goodstock` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
+  `createtime` date NOT NULL,
+  `gooddetailimage` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_gooduserid_idx` (`userid`),
   KEY `FK_categoryid_idx` (`goodcategoryid`),
   CONSTRAINT `FK_categoryid` FOREIGN KEY (`goodcategoryid`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,10 +139,11 @@ CREATE TABLE `shop` (
   `shopdescription` varchar(500) NOT NULL,
   `shopname` varchar(45) NOT NULL,
   `shopimage` varchar(300) DEFAULT NULL,
+  `createtime` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_userid_idx` (`userid`),
   CONSTRAINT `FK_id` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,13 +177,13 @@ CREATE TABLE `user` (
   `userpassword` varchar(256) NOT NULL,
   `createtime` date NOT NULL,
   `level` int(11) NOT NULL,
-  `modefytime` date DEFAULT NULL,
-  `modefyuser` varchar(45) NOT NULL,
+  `modifytime` date DEFAULT NULL,
+  `modifyuser` varchar(45) NOT NULL,
   `userexcel` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `useracount_UNIQUE` (`useracount`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -189,4 +195,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-11  9:07:07
+-- Dump completed on 2018-06-14 16:59:06
