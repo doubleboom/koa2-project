@@ -42,6 +42,10 @@
                     <input type="file" name="files" id="bannerimage" class="file-loading" />
                   </div>
                   <div class="form-group">
+                    <label for="recipient-name" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">详情图片</label>
+                    <input type="file" name="files" id="bannerdetailimage" class="file-loading" />
+                  </div>
+                  <div class="form-group">
                     <label for="message-text" class=" col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">商品名称</label>
                     <input class=" col-xs-9 col-sm-9 col-md-9 col-lg-9" id="goodname">
                   </div>
@@ -168,6 +172,7 @@
               <th data-field="state" data-checkbox="true"></th>
               <th data-field="bannername" data-formatter="escapingHTML">轮播名称</th>
               <th data-field="bannerimage" data-formatter="escapingHTML">轮播图片</th>
+              <th data-field="bannerdetailimage" data-formatter="escapingHTML">详情图片</th>
               <th data-field="bannerorder" data-formatter="escapingHTML">轮播顺序</th>
             </tr>
           </thead>
@@ -218,10 +223,10 @@
             <tr>
               <th data-field="state" data-checkbox="true"></th>
               <th data-field="shopname" data-formatter="escapingHTML">店家名称</th>
-              <th data-field="shopposition" data-formatter="escapingHTML">店家地址</th>
-              <th data-field="shopphonenumber" data-formatter="escapingHTML">店家电话</th>
               <th data-field="shopdescription" data-formatter="escapingHTML">店家介绍</th>
-              <th data-field="shopimage">店家图片</th>
+              <th data-field="shopphonenumber" data-formatter="escapingHTML">店家电话</th>
+              <th data-field="shopposition" data-formatter="escapingHTML">店家地址</th>
+              <th data-field="shopimage" data-formatter="escapingHTML">店家图片</th>
             </tr>
           </thead>
         </table>

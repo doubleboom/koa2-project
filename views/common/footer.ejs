@@ -29,6 +29,7 @@
         imageArray.shopimage = "";
         imageArray.goodimage = "";
         imageArray.bannerimage = "";
+        imageArray.bannerdetailimage = "";
         imageArray.discountimage = "";
         $(function () {
             $('.container').show();
@@ -134,7 +135,7 @@
                 operateFlag = 'add';
                 setInputsShow();
                 initFileUpload($table + "image", [], []);
-                if ($table === "good")
+                if ($table === "good"|| $table === "banner")
                     initFileUpload($table + "detailimage", [], []);
                 $('#addModal').modal('show');
             })
@@ -196,7 +197,7 @@
                                 })
                             }
                             initFileUpload($table + "image", initialPreview, initialPreviewConfig);
-                            if ($table === "good"){
+                            if ($table === "good"||$table === "banner"){
                                 initImage = imageArray[$table + "detailimage"].split(',');
                                 // imageArray[$table + "image"]="";
                                 initialPreview = [];
@@ -269,7 +270,7 @@
             $('#addModal').on('hidden.bs.modal', function (e) {
                 var table = $("#navlink li.active")[0].id;
                 $("#addModal input").val("");
-                if (table === "good"){
+                if (table === "good"||table === "banner"){
                     imageArray[table + "image"] = "";
                     imageArray[table + "detailimage"] = "";
                     $("#" + table + "image").fileinput('destroy');

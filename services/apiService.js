@@ -1,7 +1,7 @@
 const { findDataById, findDataByUserid, deleteDataById, insertData, updateData } = require("../db/dbUtils")
 module.exports = {
-    async getListByUserid(table, userid) {
-        return await findDataByUserid(table, userid);
+    async getListByUserid(table, userid, sortField) {
+        return await findDataByUserid(table, userid, sortField);
     },
     async getItemById(table, id) {
         return await findDataById(table, id);

@@ -4,7 +4,10 @@ module.exports = {
     async getList(ctx, service, next) {
         try {
             let table = ctx.params.table;
-            let bannerList = await service.apiService.getListByUserid(table, ctx.state.user);
+            let sortFiled = "id"; 
+            if(table!=="shop"&&table!=="discount")
+                sortFiled=table+"order";
+            let bannerList = await service.apiService.getListByUserid(table, ctx.state.user, sortFiled);
             ctx.type = "application/json;charset=utf-8";
             ctx.body = bannerList;
         }
