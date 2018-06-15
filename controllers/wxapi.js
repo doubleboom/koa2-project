@@ -2,9 +2,9 @@ module.exports = {
     async getHome(ctx, service, next) {
         try {
             let userid = ctx.params.userid;
-            let bannerList = await service.wxapiService.getListByUserid('banner', userid);
-            let categoryList = await service.wxapiService.getListByUserid('category', userid);
-            let hotList = await service.wxapiService.getListByUserid('good', userid)
+            let bannerList = await service.wxapiService.getListByUserid('banner', userid,"bannerorder");
+            let categoryList = await service.wxapiService.getListByUserid('category', userid,"categoryorder");
+            let hotList = await service.wxapiService.getListByPage('good', userid,"goodorder")
             ctx.type = "application/json;charset=utf-8";
             ctx.body = { bannerList, categoryList, hotList };
         }
@@ -18,7 +18,7 @@ module.exports = {
             let userid = ctx.params.userid;
             let start = ctx.params.start;
             let end = ctx.params.end;
-            let goodList = await service.wxapiService.getListByUserid('good', userid, start, end);
+            let goodList = await service.wxapiService.getListByUserid('good', userid, "goodorder", start, end);
             ctx.type = "application/json;charset=utf-8";
             ctx.body = goodList;
         }
@@ -30,7 +30,7 @@ module.exports = {
     async getDiscount(ctx, service, next) {
         try {
             let userid = ctx.params.userid;
-            let bannerList = await service.wxapiService.getListByUserid('discount', userid);
+            let bannerList = await service.wxapiService.getListByUserid('discount', userid,"id");
             ctx.type = "application/json;charset=utf-8";
             ctx.body = bannerList;
         }
@@ -42,7 +42,7 @@ module.exports = {
     async getAbout(ctx, service, next) {
         try {
             let userid = ctx.params.userid;
-            let bannerList = await service.wxapiService.getListByUserid('shop', userid);
+            let bannerList = await service.wxapiService.getListByUserid('shop', userid, "id");
             ctx.type = "application/json;charset=utf-8";
             ctx.body = bannerList;
         }
@@ -54,7 +54,7 @@ module.exports = {
     async getGoodDetail(ctx, service, next) {
         try {
             let id = ctx.params.id;
-            let good = await service.wxapiService.getItemById('good', id);
+            let good = await service.wxapiService.getItemById('good', id, "goodorder");
             ctx.type = "application/json;charset=utf-8";
             ctx.body = good[0];
         }
@@ -67,7 +67,7 @@ module.exports = {
         try {
             let id = ctx.params.id;
             let item = { goodcategoryid: id };
-            let goodList = await service.wxapiService.getListByItem('good', item);
+            let goodList = await service.wxapiService.getListByItem('good', item, "goodorder");
             ctx.type = "application/json;charset=utf-8";
             ctx.body = goodList;
         }

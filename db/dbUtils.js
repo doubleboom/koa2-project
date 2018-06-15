@@ -14,14 +14,14 @@ let findListByItem = function (table, item) {
   return query(_sql, [table, item])
 }
 
-let findDataByUserid = function (table, userid) {
-  let _sql = "SELECT * FROM ?? WHERE userid = ? "
-  return query(_sql, [table, userid])
+let findDataByUserid = function (table, userid,sortField) {
+  let _sql = "SELECT * FROM ?? WHERE userid = ? order by ?? desc,createtime desc"
+  return query(_sql, [table, userid, sortField])
 }
 
-let findDataByPage = function (table, userid, start, end) {
-  let _sql = "SELECT * FROM ?? where userid=?  LIMIT ? , ?"
-  return query(_sql, [table, userid, start, end])
+let findDataByPage = function (table, userid, sortField, start, end) {
+  let _sql = "SELECT * FROM ?? where userid=? order by ?? desc,createtime desc LIMIT ? , ?"
+  return query(_sql, [table, userid, sortField, start, end])
 }
 
 let insertMultipleData = function (table, fileds, values) {
