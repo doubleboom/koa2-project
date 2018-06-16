@@ -15,12 +15,12 @@ let findListByItem = function (table, item) {
 }
 
 let findDataByUserid = function (table, userid,sortField) {
-  let _sql = "SELECT * FROM ?? WHERE userid = ? order by ?? desc,createtime desc"
+  let _sql = "SELECT * FROM ?? WHERE userid = ? order by ?? asc,createtime desc"
   return query(_sql, [table, userid, sortField])
 }
 
 let findDataByPage = function (table, userid, sortField, start, end) {
-  let _sql = "SELECT * FROM ?? where userid=? order by ?? desc,createtime desc LIMIT ? , ?"
+  let _sql = "SELECT * FROM ?? where userid=? order by ?? asc,createtime desc LIMIT ? , ?"
   return query(_sql, [table, userid, sortField, start, end])
 }
 
